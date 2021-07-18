@@ -1,0 +1,52 @@
+function sortedM = SortMatrix(M)
+% Purpose: Sorts each column of the given matrix in ascending order.
+%
+% Inputs:
+%   M = a matrix
+% Outputs:
+%   sortedM = a matrix with columns sorted in ascending order
+%
+
+
+% Quick sort
+    function [sorted] = quicksort(arr)
+        if length(arr) <= 1
+            sorted = arr;
+            return
+        end
+        pivot = arr(1);
+        lesser = [];
+        greater = [];
+        equal = [];
+        
+        for i = 1:length(arr)
+            if arr(i) < pivot
+                lesser = [lesser, arr(i)];
+            elseif arr(i) > pivot
+                greater = [greater, arr(i)];
+            else
+                equal = [equal, arr(i)];
+            end
+        end
+        
+        if length(lesser) == 1 && length(greater) ==1
+            sorted = [lesser, equal, greater];
+        elseif length(greater) == 1
+            sorted = [quicksort(lesser), equal, greater];
+        elseif length(lesser) == 1
+            sorted = [lesser, equal, quicksort(greater)];
+        else
+            sorted = [quicksort(lesser), equal, quicksort(greater)];
+        end
+        
+    end
+
+
+sortedM = M;
+[~, col] = size(M);
+
+for j = 1:col
+    sortedM(:,j) = quicksort(M(:,j));
+end
+    disp(sortedM)
+end
